@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- PWA META TAGS -->
+    <meta name="theme-color" content="#1877f2"/>
+    <link rel="manifest" href="manifest.json">
+    
+    <title>Faculty Login</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Faculty Login</h1>
+        <p>Please enter your credentials to access the dashboard.</p>
+        <input type="text" id="faculty-username" placeholder="Username" autocomplete="username">
+        <input type="password" id="faculty-password" placeholder="Password" autocomplete="current-password">
+        <button id="faculty-login-btn">Log In</button>
+        <p id="login-error-msg" class="result-error"></p>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/faculty.js"></script>
+
+    <!-- PWA REGISTRATION SCRIPT -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').then(registration => {
+                    console.log('ServiceWorker registration successful');
+                }).catch(err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script>
+</body>
+</html>

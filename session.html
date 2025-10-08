@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- PWA META TAGS -->
+    <meta name="theme-color" content="#1877f2"/>
+    <link rel="manifest" href="manifest.json">
+
+    <title>Live Attendance Session</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Add specific styles for this page -->
+    <style>
+        .session-container {
+            max-width: 500px;
+        }
+        #qrcode-container {
+            margin: 20px auto;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: fit-content;
+        }
+        #qrcode {
+            width: 256px;
+            height: 256px;
+            margin: 10px auto;
+        }
+        #manual-code-container {
+            margin-top: 20px;
+        }
+        #manual-code {
+            font-size: 3em;
+            font-weight: bold;
+            letter-spacing: 5px;
+            background-color: #f0f2f5;
+            padding: 15px;
+            border-radius: 8px;
+            color: #1c1e21;
+        }
+        #timer {
+            font-size: 1.2em;
+            color: #ef4444;
+            font-weight: bold;
+            min-height: 30px;
+        }
+        .present-list {
+            text-align: left;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .present-list h4 {
+            margin-top: 0;
+        }
+        #live-present-list li {
+            background-color: #e9f5ff;
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container session-container">
+        <h2 id="session-class-title">Loading Session...</h2>
+        <p>Project this screen. Students can scan the QR code or enter the manual code.</p>
+        
+        <div id="qrcode-container">
+            <div id="qrcode"></div>
+        </div>
+        
+        <div id="manual-code-container">
+            <p>For students without a camera:</p>
+            <div id="manual-code">------</div>
+        </div>
+
+        <p id="timer"></p>
+        
+        <button id="end-session-btn">End Session & Go to Dashboard</button>
+
+        <div class="present-list">
+            <h4>Live Attendance (<span id="present-count">0</span>)</h4>
+            <ul id="live-present-list">
+                <!-- Live roll numbers will appear here -->
+            </ul>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script> <!-- This script protects the page -->
+    <script src="js/session.js"></script>
+
+    <!-- PWA REGISTRATION SCRIPT -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').then(registration => {
+                    console.log('ServiceWorker registration successful');
+                }).catch(err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
