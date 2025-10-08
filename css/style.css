@@ -1,1 +1,375 @@
+/* --- Google Font Import --- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
+/* --- CSS Variables for Easy Theming --- */
+:root {
+    --primary-color: #007bff;
+    --primary-hover: #0069d9;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --light-gray: #f8f9fa;
+    --border-color: #e9ecef;
+    --text-dark: #343a40;
+    --text-light: #6c757d;
+    --background-color: #f4f7f6;
+    --font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+}
+
+/* --- Base & Layout --- */
+body {
+    font-family: var(--font-family);
+    background-color: var(--background-color);
+    margin: 0;
+    padding: 2rem 1rem;
+    color: var(--text-dark);
+}
+
+.container {
+    background: white;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+    text-align: center;
+}
+
+h1, h2, h3, h4 {
+    color: var(--text-dark);
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+h1 { font-size: 2rem; }
+h2 { font-size: 1.75rem; }
+h3 { font-size: 1.5rem; }
+p { color: var(--text-light); line-height: 1.6; }
+
+/* --- Dashboard Header --- */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+.dashboard-header h2 { margin: 0; font-size: 1.75rem; }
+.primary-actions { display: flex; gap: 0.75rem; }
+.primary-actions button {
+    width: 44px; height: 44px;
+    padding: 0;
+    font-size: 1rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.primary-actions button.logout { background-color: var(--danger-color); }
+
+/* --- Buttons & Forms --- */
+button {
+    border: none;
+    border-radius: 8px;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    font-family: var(--font-family);
+    cursor: pointer;
+    padding: 12px 20px;
+    transition: all 0.2s ease;
+}
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+button.back-btn { background-color: var(--secondary-color); }
+
+.form-container {
+    text-align: left;
+    margin: 1.5rem 0;
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background-color: var(--light-gray);
+}
+.form-container label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-dark);
+}
+.button-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+input[type="text"], input[type="number"], input[type="password"],
+input[type="time"], input[type="date"], select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+    font-family: var(--font-family);
+    background-color: white;
+}
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+/* --- Responsive Table --- */
+.class-list-container { width: 100%; overflow-x: auto; }
+.class-list-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+.class-list-table thead {
+    background-color: var(--light-gray);
+}
+.class-list-table th, .class-list-table td {
+    padding: 1rem;
+    text-align: left;
+    vertical-align: middle;
+}
+.class-list-table th {
+    font-weight: 600;
+    color: var(--text-light);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.class-list-table tbody tr {
+    border-bottom: 1px solid var(--border-color);
+}
+.class-list-table tbody tr:last-child { border-bottom: none; }
+.class-list-table tbody tr:hover { background-color: #fdfdfd; }
+.class-list-table .actions-cell {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+.actions-cell .action-btn {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    width: auto;
+}
+.actions-cell .action-btn.secondary { background-color: var(--secondary-color); }
+.actions-cell .action-btn.danger { background-color: var(--danger-color); }
+
+/* --- Modals --- */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 1rem;
+}
+.modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 500px;
+    text-align: left;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+.modal-content h3 { text-align: center; }
+.modal-content label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    color: var(--text-dark);
+}
+
+/* --- History & Report Styles --- */
+#history-content { max-height: 60vh; overflow-y: auto; }
+.history-entry {
+    background: var(--light-gray);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border-color);
+}
+.history-entry p { margin: 0.25rem 0; color: var(--text-light); }
+.history-entry p strong { color: var(--text-dark); }
+.copy-report-btn {
+    background-color: var(--success-color);
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    width: auto;
+    margin-top: 1rem;
+}
+
+/* --- Live Session Page --- */
+.session-container { max-width: 500px; }
+#qrcode-container { margin: 1.5rem auto; padding: 10px; border: 1px solid var(--border-color); border-radius: 12px; width: fit-content; }
+#qrcode { width: 256px; height: 256px; margin: 10px auto; }
+#manual-code { font-size: 3rem; font-weight: 700; letter-spacing: 0.5rem; background-color: var(--light-gray); padding: 1rem; border-radius: 8px; margin: 1rem 0; }
+#timer { font-size: 1.2rem; color: var(--danger-color); font-weight: 600; min-height: 2rem; }
+
+/* --- Student Pages --- */
+#scanner-container { border: 2px solid var(--border-color); border-radius: 12px; }
+
+/* --- Utility Classes --- */
+.result-error { color: var(--danger-color); font-weight: 500; margin-top: 1rem; }
+.result-success { color: var(--success-color); font-weight: 500; margin-top: 1rem; }
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+    body { padding: 1rem 0.5rem; }
+    .container { padding: 1.5rem; }
+    .dashboard-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    
+    .class-list-table thead { display: none; }
+    .class-list-table, .class-list-table tbody, .class-list-table tr, .class-list-table td {
+        display: block; width: 100%;
+    }
+    .class-list-table tr {
+        margin-bottom: 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1rem;
+    }
+    .class-list-table td {
+        padding: 0.5rem 0;
+        text-align: right;
+        border: none;
+        position: relative;
+        padding-left: 50%;
+    }
+    .class-list-table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: 600;
+        color: var(--text-dark);
+    }
+    .class-list-table .actions-cell { justify-content: flex-end; }
+}
+
+
+/* --- NEW: Modern Student Login Styles --- */
+
+.student-container {
+    max-width: 420px; /* Narrower container for a focused login form */
+}
+
+.logo-container {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem auto;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+}
+
+.logo-container i {
+    color: white;
+    font-size: 2rem;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.input-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+    opacity: 0.7;
+}
+
+.input-group input {
+    padding-left: 45px; /* Make space for the icon */
+    width: 100%;
+    margin-bottom: 0;
+}
+
+#student-login-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+/* --- NEW: Modern Student Dashboard Styles --- */
+.attendance-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.option-card {
+    background-color: var(--light-gray);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    color: var(--text-dark);
+}
+
+.option-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow);
+    border-color: var(--primary-color);
+    background-color: white;
+}
+
+.option-card i {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.option-card span {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.option-card small {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-top: 0.25rem;
+}
+
+/* Responsive adjustments for the options */
+@media (max-width: 480px) {
+    .attendance-options {
+        grid-template-columns: 1fr; /* Stack options on small screens */
+        gap: 1rem;
+    }
+}
