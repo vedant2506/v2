@@ -61,11 +61,13 @@ document.addEventListener('DOMContentLoaded', () => {
         sessionClassTitleEl.textContent = `Live Session: ${classInfo.subject_name} - ${classInfo.division} ${classInfo.batch ? `(${classInfo.batch})` : ''}`;
     }
 
+    // Find this function...
     async function generateAndDisplayCodes() {
+        // ...and replace it with this.
+
         const timestamp = Date.now();
         const manualCode = timestamp.toString().slice(-6);
         
-        // ** THE FIX IS HERE: Save the new code to the database **
         const { error } = await db
             .from('sessions')
             .update({ current_manual_code: manualCode })
@@ -74,13 +76,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (error) {
             console.error("Failed to update manual code in DB", error);
             manualCodeEl.textContent = "ERROR";
-            return; // Don't display if we can't save it
+            return;
         }
 
         manualCodeEl.textContent = manualCode;
 
-        // The QR code data only needs the timestamp for expiry check.
-        const qrData = `${sessionDetails.sessionId}|${timestamp}`;
+        // --- THE KEY CHANGE IS HERE ---
+        // Get the current URL of the application
+        const appURL = window.location.origin + window.location.pathname.replace('session.html', 'index.html');
+        // Create the QR data string
+        const qrScanData = `${sessionDetails.sessionId}|${timestamp}`;
+        // Combine them into a full URL with the data as a parameter
+        const qrData = `${appURL}?scan=${btoa(qrScanData)}`; // btoa() makes the data URL-safe
 
         qrcodeEl.innerHTML = ''; 
         qrCodeInstance = new QRCode(qrcodeEl, {

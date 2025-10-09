@@ -1,6 +1,30 @@
 // js/student.js
 
+
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
+
+ // --- NEW: CHECK URL FOR SCAN DATA ON PAGE LOAD ---
+    function checkForScanData() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const scanData = urlParams.get('scan');
+
+        if (scanData) {
+            // Data found in URL. Decode it.
+            const decodedData = atob(scanData);
+            // We need to wait for the user to log in before processing it.
+            // So, we store it in sessionStorage.
+            sessionStorage.setItem('pendingScanData', decodedData);
+
+            // Clean the URL so it doesn't get reused on refresh
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    }
+    checkForScanData(); // Run this check as soon as the page loads
+    // --- END OF NEW BLOCK ---
+
     // --- SIMPLE DEVICE FINGERPRINTING ---
     function getDeviceFingerprint() {
         const fingerprint = [
@@ -58,15 +82,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- EVENT LISTENERS ---
-    loginBtn.addEventListener('click', () => {
+        loginBtn.addEventListener('click', () => {
         const rollNo = rollInput.value.trim();
         if (rollNo && !isNaN(rollNo)) {
             loggedInRollNo = rollNo;
             sessionStorage.setItem('loggedInStudentRoll', rollNo);
             updateStudentInfo(rollNo);
-            showView('dashboard');
+            
+            // --- NEW LOGIC AFTER LOGIN ---
+            const pendingData = sessionStorage.getItem('pendingScanData');
+            if (pendingData) {
+                sessionStorage.removeItem('pendingScanData'); // Use it once and remove it
+                handleQrCodeData(pendingData); // Process the scanned data immediately
+            } else {
+                showView('dashboard'); // Normal login flow
+            }
+            // --- END OF NEW LOGIC ---
+
             loginError.textContent = '';
-        } else { loginError.textContent = 'Please enter a valid Roll Number.'; }
+        } else {
+            loginError.textContent = 'Please enter a valid Roll Number.';
+        }
     });
     studentLogoutBtn.addEventListener('click', () => {
         loggedInRollNo = null;
