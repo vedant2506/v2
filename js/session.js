@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Find this function...
     async function generateAndDisplayCodes() {
-        // ...and replace it with this.
+        // ...and replace it with this robust version.
 
         const timestamp = Date.now();
         const manualCode = timestamp.toString().slice(-6);
@@ -81,13 +81,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         manualCodeEl.textContent = manualCode;
 
-        // --- THE KEY CHANGE IS HERE ---
-        // Get the current URL of the application
-        const appURL = window.location.origin + window.location.pathname.replace('session.html', 'index.html');
-        // Create the QR data string
+        // --- THE RELIABLE URL FIX IS HERE ---
+        // It now uses the base URL from your config file.
+        const appURL = APP_BASE_URL + 'index.html';
+        
         const qrScanData = `${sessionDetails.sessionId}|${timestamp}`;
-        // Combine them into a full URL with the data as a parameter
-        const qrData = `${appURL}?scan=${btoa(qrScanData)}`; // btoa() makes the data URL-safe
+        // btoa() encodes the data to make it safe for a URL
+        const qrData = `${appURL}?scan=${btoa(qrScanData)}`;
 
         qrcodeEl.innerHTML = ''; 
         qrCodeInstance = new QRCode(qrcodeEl, {
