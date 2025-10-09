@@ -373,3 +373,28 @@ input:focus, select:focus {
         gap: 1rem;
     }
 }
+
+
+/* --- NEW: Styles for the Modify Absentees Feature --- */
+.modify-container {
+    background-color: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.modify-container p {
+    margin-top: 0;
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.modify-container label {
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.modify-container label input {
+    width: auto;
+    margin-right: 0.5rem;
+}
