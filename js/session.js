@@ -61,9 +61,9 @@ document.addEventListener('DOMContentLoaded', () => {
         sessionClassTitleEl.textContent = `Live Session: ${classInfo.subject_name} - ${classInfo.division} ${classInfo.batch ? `(${classInfo.batch})` : ''}`;
     }
 
-    // Find this function...
+     // Find this function...
     async function generateAndDisplayCodes() {
-        // ...and replace it with this robust version.
+        // ...and replace it with this original, stable version.
 
         const timestamp = Date.now();
         const manualCode = timestamp.toString().slice(-6);
@@ -81,13 +81,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         manualCodeEl.textContent = manualCode;
 
-        // --- THE RELIABLE URL FIX IS HERE ---
-        // It now uses the base URL from your config file.
-        const appURL = APP_BASE_URL + 'index.html';
-        
-        const qrScanData = `${sessionDetails.sessionId}|${timestamp}`;
-        // btoa() encodes the data to make it safe for a URL
-        const qrData = `${appURL}?scan=${btoa(qrScanData)}`;
+        // --- THE ROLLBACK IS HERE ---
+        // The QR code data is now back to the simple, raw format.
+        const qrData = `${sessionDetails.sessionId}|${timestamp}`;
 
         qrcodeEl.innerHTML = ''; 
         qrCodeInstance = new QRCode(qrcodeEl, {
