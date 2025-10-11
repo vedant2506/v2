@@ -1,7 +1,5 @@
-/* --- Google Font Import --- */
+/* --- Google Font Import & Variables --- */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-
-/* --- CSS Variables --- */
 :root {
     --primary-color: #007bff; --primary-hover: #0069d9;
     --secondary-color: #6c757d; --success-color: #28a745;
@@ -12,18 +10,40 @@
     --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
 }
 
-/* --- Base & Layout --- */
-body { font-family: var(--font-family); background-color: var(--background-color); margin: 0; padding: 2rem 1rem; }
-.container { background: white; padding: 2rem; border-radius: 16px; box-shadow: var(--shadow); width: 100%; max-width: 900px; margin: auto; text-align: center; }
-h1, h2, h3, h4 { color: var(--text-dark); margin: 0 0 1rem 0; font-weight: 600; }
+/* --- Base & Layout (Horizontal Scroll Fix) --- */
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+}
+body { 
+    font-family: var(--font-family); 
+    background-color: var(--background-color); 
+    margin: 0; 
+    padding: 2rem 1rem; 
+    color: var(--text-dark); 
+    box-sizing: border-box;
+}
+.container { 
+    background: white; 
+    padding: 2rem; 
+    border-radius: 16px; 
+    box-shadow: var(--shadow); 
+    width: 100%; 
+    max-width: 900px; 
+    margin: auto; 
+    box-sizing: border-box;
+}
+h1, h2, h3, h4 { margin: 0 0 1rem 0; font-weight: 600; color: var(--text-dark); }
 p { color: var(--text-light); line-height: 1.6; }
 
 /* --- Dashboard Header --- */
-.dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); }
-.dashboard-header h2 { margin: 0; font-size: 1.75rem; }
+.dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+.dashboard-header h2 { margin: 0; }
 .primary-actions { display: flex; gap: 0.75rem; }
-.primary-actions button { width: 44px; height: 44px; padding: 0; font-size: 1rem; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.primary-actions button.logout { background-color: var(--danger-color); }
+.primary-actions button { width: auto; padding-left: 1rem; padding-right: 1rem; }
+.primary-actions button i { margin-right: 0.5rem; }
+.primary-actions button.secondary { background-color: var(--light-gray); color: var(--text-dark); border: 1px solid var(--border-color); }
+.logout { width: 44px; height: 44px; padding: 0; font-size: 1rem; border-radius: 12px; display: flex; align-items: center; justify-content: center; background-color: var(--danger-color); }
 
 /* --- Buttons & Forms --- */
 button { border: none; border-radius: 8px; background-color: var(--primary-color); color: white; font-size: 1rem; font-weight: 500; font-family: var(--font-family); cursor: pointer; padding: 12px 20px; transition: all 0.2s ease; }
@@ -35,25 +55,36 @@ button.back-btn { background-color: var(--secondary-color); }
 input, select { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem; margin-bottom: 1rem; box-sizing: border-box; font-family: var(--font-family); background-color: white; }
 input:focus, select:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); }
 
-/* --- Dashboard Table --- */
-.class-list-container { width: 100%; overflow-x: auto; }
+/* --- DESKTOP VIEW: Table Styles --- */
 .class-list-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
 .class-list-table thead { background-color: var(--light-gray); }
-.class-list-table th, .class-list-table td { padding: 1rem; text-align: left; vertical-align: middle; }
+.class-list-table th, .class-list-table td { padding: 1rem; text-align: left; vertical-align: middle; transition: background-color 0.3s ease; }
 .class-list-table th { font-weight: 600; color: var(--text-light); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
 .class-list-table tbody tr { border-bottom: 1px solid var(--border-color); }
-.class-list-table tbody tr:last-child { border-bottom: none; }
 .class-list-table .actions-cell { display: flex; gap: 0.5rem; align-items: center; }
 .actions-cell .action-btn { padding: 8px 12px; font-size: 0.9rem; width: auto; }
 .actions-cell .action-btn.secondary { background-color: var(--secondary-color); }
 .actions-cell .action-btn.danger { background-color: var(--danger-color); }
+.actions-cell .menu-container { position: relative; }
 
-/* --- Modals --- */
-.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; padding: 1rem; }
+/* --- Floating Action Button (FAB) --- */
+.fab-container { position: fixed; bottom: 2rem; right: 2rem; z-index: 100; }
+.fab-main { width: 56px; height: 56px; border-radius: 50%; box-shadow: var(--shadow); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: transform 0.3s ease; }
+.fab-main.active { transform: rotate(135deg); }
+.fab-options { position: absolute; bottom: 70px; right: 4px; display: flex; flex-direction: column; gap: 1rem; align-items: center; transition: all 0.3s ease; opacity: 0; transform: translateY(20px); pointer-events: none; }
+.fab-options.active { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.fab-option { width: 48px; height: 48px; border-radius: 50%; background: var(--light-gray); color: var(--secondary-color); box-shadow: var(--shadow); display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; }
+.fab-option:hover::after { content: attr(data-tooltip); position: absolute; right: 60px; background: var(--text-dark); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; white-space: nowrap; }
+
+/* --- Visibility Control --- */
+.mobile-only { display: none; }
+.desktop-only { display: flex; }
+thead.desktop-only { display: table-header-group; }
+
+/* --- Modals, History, Student Page etc. --- */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; padding: 1rem; box-sizing: border-box; }
 .modal-content { background: white; padding: 2rem; border-radius: 16px; width: 100%; max-width: 500px; text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
-.modal-content.wide { max-width: 800px; } /* Wider modal for history */
-
-/* --- History Table, Filters, & Pagination --- */
+.modal-content.wide { max-width: 800px; }
 .history-filters { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); }
 .filter-group { display: flex; align-items: center; gap: 0.5rem; }
 .filter-group label { margin: 0; font-size: 0.9rem; }
@@ -66,9 +97,7 @@ input:focus, select:focus { outline: none; border-color: var(--primary-color); b
 .modify-container { background-color: #fff; border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; margin-top: 1rem;}
 .modify-container label { font-size: 0.9rem; }
 .modify-container label input { width: auto; margin-right: 0.5rem; }
-
-/* --- Student Login & Scanner --- */
-.student-container { max-width: 420px; }
+.student-container { max-width: 420px; text-align: center; }
 .logo-container { width: 70px; height: 70px; background: linear-gradient(135deg, var(--primary-color), var(--primary-hover)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem auto; box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3); }
 .logo-container i { color: white; font-size: 2rem; }
 .input-group { position: relative; margin-bottom: 1rem; }
@@ -80,26 +109,49 @@ input:focus, select:focus { outline: none; border-color: var(--primary-color); b
 .option-card i { font-size: 2.5rem; color: var(--primary-color); margin-bottom: 1rem; }
 .option-card span { font-weight: 600; font-size: 1rem; }
 .option-card small { font-size: 0.85rem; color: var(--text-light); margin-top: 0.25rem; }
-#scanner-container { max-width: 400px; margin: 1.5rem auto; border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); position: relative; }
-#scanner-container::before { content: ''; position: absolute; top: 20px; bottom: 20px; left: 20px; right: 20px; box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.5); border-radius: 12px; }
-
-/* --- Utility Classes --- */
+.session-container { max-width: 500px; text-align: center; }
+#scanner-container { width: 100%; max-width: 400px; margin: 1.5rem auto; border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); position: relative; padding-top: 100%; }
+#scanner-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+#scanner-container::before { content: ''; position: absolute; top: 10%; bottom: 10%; left: 10%; right: 10%; box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.5), inset 0 0 0 5000px rgba(0,0,0,0.3); border-radius: 12px; }
 .result-error { color: var(--danger-color); font-weight: 500; margin-top: 1rem; }
 .result-success { color: var(--success-color); font-weight: 500; margin-top: 1rem; }
+.card-menu { display: none; position: absolute; top: 2.5rem; right: 0; background: white; border-radius: 8px; box-shadow: var(--shadow); z-index: 10; overflow: hidden; width: max-content; }
+.card-menu.show { display: block; }
+.card-menu button { display: block; width: 100%; background: none; color: var(--danger-color); text-align: left; padding: 0.75rem 1rem; font-size: 0.9rem; }
+.color-picker { padding: 0.75rem; border-top: 1px solid var(--border-color); }
+.color-swatches { display: flex; gap: 0.5rem; justify-content: space-around; }
+.color-swatch { width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 2px solid white; box-shadow: 0 0 0 1px var(--border-color); transition: transform 0.2s; }
+.color-swatch:hover { transform: scale(1.1); }
 
-/* --- Responsive Design --- */
+/* --- RESPONSIVE STYLES (Mobile View) --- */
 @media (max-width: 768px) {
-    body { padding: 1rem 0.5rem; }
-    .container { padding: 1.5rem; }
-    .dashboard-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
-    .class-list-table thead { display: none; }
+    body {
+        padding: 1rem 0; /* Remove side padding from the body */
+    }
+    .container {
+        width: 100%;
+        border-radius: 0;
+        box-shadow: none;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    .desktop-only { display: none !important; }
+    .mobile-only { display: block; } /* Use block for FAB container */
+    .dashboard-header { align-items: center; }
+    .dashboard-header h2 { font-size: 1.5rem; }
     .class-list-table, .class-list-table tbody, .class-list-table tr, .class-list-table td { display: block; width: 100%; }
-    .class-list-table tr { margin-bottom: 1rem; border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem; }
-    .class-list-table td { padding: 0.5rem 0; text-align: right; border: none; position: relative; padding-left: 50%; }
-    .class-list-table td::before { content: attr(data-label); position: absolute; left: 0; width: 45%; padding-right: 10px; white-space: nowrap; text-align: left; font-weight: 600; color: var(--text-dark); }
+    .class-list-table tr { margin-bottom: 1.5rem; border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem; background: white; position: relative; }
+    .class-list-table td { padding: 0.25rem 0; border: none; display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
+    .class-list-table td[data-label="Subject"] { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-dark); }
+    .class-list-table td[data-label]::before { content: attr(data-label) ": "; font-weight: 500; color: var(--text-light); font-size: 0.8rem; margin-right: 0.5rem; display: block; margin-bottom: 2px; }
+    .class-list-table td[data-label="Subject"]::before, .class-list-table td[data-label="Actions"]::before { display: none; }
+    .class-list-table .actions-cell { flex-direction: row; gap: 0.75rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color); }
+    .actions-cell .action-btn { flex-grow: 1; }
+    .actions-cell .menu-container { position: absolute; top: 0.5rem; right: 0.5rem; }
+    .actions-cell .card-menu-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--light-gray); color: var(--text-light); border: 1px solid var(--border-color); cursor: pointer; display: flex; align-items: center; justify-content: center; }
     .history-filters { flex-direction: column; align-items: stretch; }
 }
 @media (max-width: 480px) {
-    .attendance-options { grid-template-columns: 1fr; gap: 1rem; }
+    .attendance-options { grid-template-columns: 1fr; }
     .button-group { flex-direction: column; }
 }
