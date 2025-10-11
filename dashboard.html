@@ -3,20 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- PWA META TAGS -->
     <meta name="theme-color" content="#007bff"/>
     <link rel="manifest" href="manifest.json">
-
-    <!-- FONT AWESOME FOR ICONS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
-
     <title>Teacher Dashboard</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="container">
-        <!-- New Modern Header -->
         <div class="dashboard-header">
             <h2 id="welcome-message">Welcome, Teacher!</h2>
             <div class="primary-actions">
@@ -26,16 +20,11 @@
             </div>
         </div>
         
-        <!-- Collapsible Form Sections -->
         <div id="create-class-form-container" class="form-container" style="display: none;">
-            <!-- Form content is the same as before -->
             <h4>New Class Details</h4>
             <input type="text" id="subject-name" placeholder="Subject Name">
             <input type="text" id="division" placeholder="Division (e.g., A, B)">
-            <select id="class-type">
-                <option value="Lecture">Lecture</option>
-                <option value="Lab">Lab</option>
-            </select>
+            <select id="class-type"> <option value="Lecture">Lecture</option> <option value="Lab">Lab</option> </select>
             <input type="text" id="batch" placeholder="Batch (e.g., B1, B2)" style="display: none;">
             <input type="number" id="start-roll-no" placeholder="Start Roll No.">
             <input type="number" id="end-roll-no" placeholder="End Roll No.">
@@ -47,15 +36,10 @@
             </div>
         </div>
         <div id="mark-off-form-container" class="form-container" style="display: none;">
-            <!-- Form content is the same as before -->
             <h4>Mark Session as Off</h4>
             <select id="mark-off-class-select"></select>
             <input type="date" id="mark-off-date">
-            <select id="mark-off-reason">
-                <option value="Holiday">Holiday</option>
-                <option value="Common Lecture Off">Common Lecture Off</option>
-                <option value="Common Lab Off">Common Lab Off</option>
-            </select>
+            <select id="mark-off-reason"> <option value="Holiday">Holiday</option> <option value="Common Lecture Off">Common Lecture Off</option> <option value="Common Lab Off">Common Lab Off</option> </select>
             <div class="button-group">
                 <button id="save-mark-off-btn">Confirm</button>
                 <button id="cancel-mark-off-btn" class="back-btn">Cancel</button>
@@ -63,27 +47,18 @@
         </div>
 
         <h3>My Classes</h3>
-        <!-- New Responsive Table for Classes -->
         <div class="class-list-container">
             <table class="class-list-table">
                 <thead>
-                    <tr>
-                        <th>Subject</th>
-                        <th>Division/Batch</th>
-                        <th>Timings</th>
-                        <th>Roster</th>
-                        <th>Actions</th>
-                    </tr>
+                    <tr> <th>Subject</th> <th>Division/Batch</th> <th>Timings</th> <th>Roster</th> <th>Actions</th> </tr>
                 </thead>
-                <tbody id="class-list-body">
-                    <!-- Class rows will be dynamically inserted here -->
-                </tbody>
+                <tbody id="class-list-body"></tbody>
             </table>
             <p id="loading-classes-msg">Loading classes...</p>
         </div>
     </div>
 
-    <!-- Modals (structure unchanged, will be restyled by new CSS) -->
+    <!-- Session Modal (Unchanged) -->
     <div id="session-modal" class="modal-overlay" style="display: none;">
         <div class="modal-content">
             <h3 id="modal-class-title"></h3>
@@ -96,17 +71,39 @@
             </div>
         </div>
     </div>
+
+    <!-- History Modal (Completely Overhauled) -->
     <div id="history-modal" class="modal-overlay" style="display: none;">
-        <div class="modal-content">
+        <div class="modal-content wide">
             <h3 id="history-class-title"></h3>
-            <div id="history-content">
-                <p>Loading history...</p>
+            <div class="history-filters">
+                <div class="filter-group">
+                    <label for="start-date-filter">From</label>
+                    <input type="date" id="start-date-filter">
+                </div>
+                <div class="filter-group">
+                    <label for="end-date-filter">To</label>
+                    <input type="date" id="end-date-filter">
+                </div>
+                <div class="filter-group">
+                    <label for="entries-per-page">Show</label>
+                    <select id="entries-per-page">
+                        <option value="5">5</option>
+                        <option value="10" selected>10</option>
+                        <option value="25">25</option>
+                    </select>
+                </div>
             </div>
-            <button id="close-history-modal-btn" class="back-btn">Close</button>
+            <div id="history-content">
+                <!-- History table will be built by JS -->
+            </div>
+            <div id="history-pagination">
+                <!-- Pagination buttons will be built by JS -->
+            </div>
+            <button id="close-history-modal-btn" class="back-btn" style="margin-top: 1rem;">Close</button>
         </div>
     </div>
     
-    <!-- Scripts (unchanged) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/config.js"></script>
     <script src="js/auth.js"></script>
