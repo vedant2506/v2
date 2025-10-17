@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- UI HELPER FUNCTIONS ---
     function toggleForm(containerId, isDesktop) {
-        return function() {
+        return function () {
             const formContainer = document.getElementById(containerId);
             const isVisible = formContainer.style.display === 'block';
             formContainer.style.display = isVisible ? 'none' : 'block';
@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function startSession() {
         const confirmStartSessionBtn = document.getElementById('confirm-start-session-btn'), classId = parseInt(confirmStartSessionBtn.dataset.classId);
-        const newSession = { class_id: classId, start_time: document.getElementById('modal-start-time').value, end_time: document.getElementById('modal-end-time').value, status: 'Active' };
+        const newSession = { class_id: classId, start_time: document.getElementById('modal-start-time').value, end_time: document.getElementById('modal-end-time').value, status: 'Active', qrSpeed: document.getElementById('modal-qr-speed').value  };
         confirmStartSessionBtn.disabled = true; confirmStartSessionBtn.textContent = 'Starting...';
         const { data, error } = await db.from('sessions').insert(newSession).select().single();
         if (error) { console.error('Error starting session:', error); alert('Could not start session.'); confirmStartSessionBtn.disabled = false; confirmStartSessionBtn.textContent = 'Confirm & Begin Session'; }

@@ -12,9 +12,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 
     <title>Student Attendance</title>
-    <link rel="stylesheet" href="css/style.css?v=2">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <!-- Ping Indicator -->
+    <div class="ping-indicator offline">
+        <i class="fas fa-wifi"></i>
+        <span id="pingValue">--</span><small>ms</small>
+    </div>
+
     <div class="container student-container">
         <!-- Student Login View -->
         <div id="student-login-view">
@@ -82,9 +88,10 @@
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
     <script src="js/config.js"></script>
     <script src="js/student.js"></script>
+    <script>window.NO_INTERNET_VIDEO_SRC = 'Animation.mp4';</script>
+    <script src="js/pingIndicator.js"></script>
     <script>
         if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js'); }); }
     </script>
 </body>
-
 </html>

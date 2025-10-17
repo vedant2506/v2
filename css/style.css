@@ -10,6 +10,112 @@
     --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
 }
 
+/* Ping Indicator Styles */
+.ping-indicator {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    box-shadow: var(--shadow);
+    font-size: 0.9rem;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.ping-indicator i {
+    transition: color 0.3s ease;
+}
+
+.ping-indicator.good i { color: var(--success-color); }
+.ping-indicator.poor i { color: var(--danger-color); }
+.ping-indicator.offline i { color: var(--secondary-color); }
+
+@media (max-width: 768px) {
+    .ping-indicator {
+        top: 1rem;
+        bottom: auto;
+        right: 1rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* --- Offline Overlay --- */
+.offline-overlay {
+    position: fixed;
+    inset: 0;
+    background: #ffffff;
+    color: #1f2937; /* gray-800 */
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    z-index: 2000;
+    padding: 2rem 1rem;
+}
+.offline-overlay.show { display: flex; }
+.offline-card {
+    max-width: 420px;
+}
+.offline-gif {
+    width: 220px;
+    height: 220px;
+    object-fit: contain;
+    margin: 0 auto 1rem auto;
+    display: block;
+}
+.offline-text {
+    font-size: 1.3rem;
+    margin: 0 auto 1rem auto;
+    opacity: 0.95;
+    color: #374151; /* gray-700 */
+}
+.offline-video {
+    width: 300px;
+    height: 300px;
+    object-fit: contain;
+    margin: 0 auto 1rem auto;
+    display: block;
+    border: none;
+    background: transparent;
+}
+.offline-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    color: #111827; /* gray-900 */
+}
+.offline-subtitle {
+    color: #475569; /* slate-600 */
+    margin: 0 0 1.25rem 0;
+}
+.retry-btn {
+    border: none;
+    border-radius: 9999px;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 12px 18px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    box-shadow: var(--shadow);
+}
+.retry-btn:active { transform: translateY(1px); }
+.retry-hint { margin-top: 0.75rem; font-size: 0.9rem; color: #94a3b8; }
+
+@media (max-width: 480px) {
+    .offline-gif { width: 160px; height: 160px; }
+    .offline-video { width: 220px; height: 220px; }
+    .offline-text { font-size: 1.1rem; }
+    .offline-title { font-size: 1.25rem; }
+}
+
 /* --- Base & Layout (Horizontal Scroll Fix) --- */
 html, body {
     overflow-x: hidden;

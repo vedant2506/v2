@@ -7,9 +7,10 @@
     <!-- PWA META TAGS -->
     <meta name="theme-color" content="#1877f2"/>
     <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 
     <title>Live Attendance Session</title>
-    <link rel="stylesheet" href="css/style.css?v=2">
+    <link rel="stylesheet" href="css/style.css">
     <!-- Add specific styles for this page -->
     <style>
         .session-container {
@@ -83,6 +84,7 @@
         <p id="timer"></p>
         
         <button id="end-session-btn">End Session & Go to Dashboard</button>
+        
 
         <div class="present-list">
             <h4>Live Attendance (<span id="present-count">0</span>)</h4>
@@ -97,6 +99,8 @@
     <script src="js/config.js"></script>
     <script src="js/auth.js"></script> <!-- This script protects the page -->
     <script src="js/session.js"></script>
+    <script>window.NO_INTERNET_VIDEO_SRC = 'Animation.mp4';</script>
+    <script src="js/pingIndicator.js"></script>
 
     <!-- PWA REGISTRATION SCRIPT -->
     <script>
@@ -111,5 +115,4 @@
         }
     </script>
 </body>
-
 </html>

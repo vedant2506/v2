@@ -42,6 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
         sessionClassTitleEl.textContent = `Live Session: ${classInfo.subject_name} - ${classInfo.division} ${classInfo.batch ? `(${classInfo.batch})` : ''}`;
     }
 
+    // Location broadcast removed per rollback
+
     async function generateAndDisplayCodes() {
         const timestamp = Date.now();
         const manualCode = timestamp.toString().slice(-6);

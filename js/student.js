@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- STATE MANAGEMENT & INITIALIZATION ---
     let loggedInRollNo = sessionStorage.getItem('loggedInStudentRoll');
+    // Geolocation gating rolled back
     if (loggedInRollNo) {
         showView('dashboard');
         updateStudentInfo(loggedInRollNo);
@@ -68,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
             sessionStorage.setItem('loggedInStudentRoll', rollNo);
             updateStudentInfo(rollNo);
             loginError.textContent = '';
-            showView('dashboard'); // Simple login, always go to dashboard
+            showView('dashboard');
         } else {
             loginError.textContent = 'Please enter a valid Roll Number.';
         }
@@ -108,6 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 scannerStatus.textContent = 'Could not access camera. Please grant permission.';
             });
     }
+    // Removed geolocation helpers
+
 
     function stopScanner() {
         if (videoStream) { videoStream.getTracks().forEach(track => track.stop()); }
@@ -172,9 +175,24 @@ document.addEventListener('DOMContentLoaded', () => {
             showResult('Invalid QR code format.', 'error', 'InAppScan');
             return;
         }
+        const { data: activeSessions, error } = await db.from('sessions').select(`id, qrSpeed, current_manual_code, classes (start_roll_no, end_roll_no)`).eq('status', 'Active').eq('session_date', new Date().toISOString().slice(0, 10));
+        if (error || activeSessions.length === 0) {
+            attendanceResultEl.textContent = 'No active attendance session found.';
+            return;
+        }
         const codeAgeMs = Date.now() - parseInt(timestamp);
-        if (codeAgeMs > 20000) {
+        
+        const qrSpeed = activeSessions.find(s => s.id.toString() === sessionId)?.qrSpeed || 15;
+        console.log(codeAgeMs + " qr speed " + qrSpeed * 1000);
+        if (codeAgeMs > qrSpeed * 1000) {
             showResult('Expired QR code. Please scan the new one.', 'error', 'InAppScan');
+            return;
+        }
+
+        const studentRollNumber = parseInt(loggedInRollNo);
+        const validSession = activeSessions.find(s => studentRollNumber >= s.classes.start_roll_no && studentRollNumber <= s.classes.end_roll_no);
+        if (!validSession) {
+            attendanceResultEl.textContent = 'no active session for your roll number.';
             return;
         }
         await markAttendance(parseInt(sessionId), 'InAppScan');
@@ -199,6 +217,8 @@ document.addEventListener('DOMContentLoaded', () => {
             showResult(`Success, Roll No: ${loggedInRollNo}! You are marked present.`, 'success', method);
         }
     }
+
+    // Removed radius enforcement
 
     function showResult(message, type, method) {
         let resultEl;
