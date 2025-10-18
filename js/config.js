@@ -1,11 +1,11 @@
 var db = null;
 
 window.dbReady = (async () => {
-    const { key } = await fetch("http://localhost:3000/key", {
+    const { key } = await fetch("https://attendance-server-t4he.onrender.com/key", {
         headers: { "origin": window.location.origin }
     }).then(res => res.json());
 
-    const { url } = await fetch("http://localhost:3000/url", {
+    const { url } = await fetch("https://attendance-server-t4he.onrender.com/url", {
         headers: { "origin": window.location.origin }
     }).then(res => res.json());
 
