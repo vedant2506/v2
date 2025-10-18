@@ -12,7 +12,6 @@ window.dbReady = (async () => {
     const { createClient } = supabase;
     db = createClient(url, key);
 
-    console.log("✅ Supabase initialized");
     return db; // Return db when ready
 })();
 

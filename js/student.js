@@ -2,11 +2,8 @@
 (async () => {
     const db = await window.dbReady; // Wait for config.js to finish
 
-    console.log("Dashboard ready. Supabase client:", db);
-
     // Example: Fetch data
     const { data, error } = await db.from('sessions').select('*');
-    console.log(data, error);
 
     if (db) {
         loadStudent(db);
@@ -196,7 +193,6 @@ function loadStudent(db) {
         const codeAgeMs = Date.now() - parseInt(timestamp);
 
         const qrSpeed = activeSessions.find(s => s.id.toString() === sessionId)?.qrSpeed || 15;
-        console.log(codeAgeMs + " qr speed " + qrSpeed * 1000);
         if (codeAgeMs > qrSpeed * 1000) {
             showResult('Expired QR code. Please scan the new one.', 'error', 'InAppScan');
             return;

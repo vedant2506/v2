@@ -2,11 +2,8 @@
 (async () => {
     const db = await window.dbReady; // Wait for config.js to finish
 
-    console.log("Dashboard ready. Supabase client:", db);
-
     // Example: Fetch data
     const { data, error } = await db.from('sessions').select('*');
-    console.log(data, error);
 
     if (db) {
         loadDashboard(db);
