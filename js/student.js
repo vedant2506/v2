@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function handleManualCodeSubmit() {
         const code = manualCodeInput.value.trim();
         if (code.length !== 6 || isNaN(code)) {
-            manualCodeResult.textContent = 'Please enter a valid 6-digit code.';
+            showResult('Please enter a valid 6-digit code.', 'error', 'Manual Entry');
             return;
         }
         submitManualCodeBtn.disabled = true;
@@ -147,14 +147,14 @@ document.addEventListener('DOMContentLoaded', () => {
         manualCodeResult.textContent = '';
         const { data: activeSessions, error } = await db.from('sessions').select(`id, current_manual_code, classes (start_roll_no, end_roll_no)`).eq('status', 'Active').eq('session_date', new Date().toISOString().slice(0, 10));
         if (error || activeSessions.length === 0) {
-            manualCodeResult.textContent = 'No active attendance session found.';
+            showResult('No active attendance session found.', 'error', 'Manual Entry');
             resetSubmitButton();
             return;
         }
         const studentRollNumber = parseInt(loggedInRollNo);
         const validSession = activeSessions.find(s => studentRollNumber >= s.classes.start_roll_no && studentRollNumber <= s.classes.end_roll_no && s.current_manual_code === code);
         if (!validSession) {
-            manualCodeResult.textContent = 'Invalid code or no active session for your roll number.';
+            showResult('Invalid code or no active session for your roll number.', 'error', 'Manual Entry');
             resetSubmitButton();
             return;
         }
@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         const { data: activeSessions, error } = await db.from('sessions').select(`id, qrSpeed, current_manual_code, classes (start_roll_no, end_roll_no)`).eq('status', 'Active').eq('session_date', new Date().toISOString().slice(0, 10));
         if (error || activeSessions.length === 0) {
-            attendanceResultEl.textContent = 'No active attendance session found.';
+            showResult('No active attendance session found.', 'error', 'InAppScan');
             return;
         }
         const codeAgeMs = Date.now() - parseInt(timestamp);
@@ -192,13 +192,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const studentRollNumber = parseInt(loggedInRollNo);
         const validSession = activeSessions.find(s => studentRollNumber >= s.classes.start_roll_no && studentRollNumber <= s.classes.end_roll_no);
         if (!validSession) {
-            attendanceResultEl.textContent = 'no active session for your roll number.';
+            showResult('No active session for your roll number.', 'error', 'InAppScan');
             return;
         }
         await markAttendance(parseInt(sessionId), 'InAppScan');
     }
 
     async function markAttendance(sessionId, method) {
+        // Show processing animation if available
+        if (typeof attendanceAnimation !== 'undefined') {
+            attendanceAnimation.showProcessing('Marking attendance...');
+        }
+        
         const { error: insertError } = await db.from('attendance_records').insert({
             session_id: sessionId,
             roll_no: parseInt(loggedInRollNo),
@@ -207,13 +212,41 @@ document.addEventListener('DOMContentLoaded', () => {
         if (insertError) {
             console.error('Insert Error:', insertError);
             if (insertError.message.includes('attendance_records_session_id_roll_no_key')) {
+                // Show success animation for already marked
+                if (typeof attendanceAnimation !== 'undefined') {
+                    attendanceAnimation.showSuccess(
+                        `You are already marked present, Roll No: ${loggedInRollNo}.`,
+                        'Your attendance was previously recorded.'
+                    );
+                }
                 showResult(`You are already marked present, Roll No: ${loggedInRollNo}.`, 'success', method);
             } else if (insertError.message.includes('attendance_records_session_id_device_fingerprint_key')) {
+                // Show failure animation for device already used
+                if (typeof attendanceAnimation !== 'undefined') {
+                    attendanceAnimation.showFailure(
+                        'Device Already Used',
+                        'This device has already been used for this session. Attempt flagged.'
+                    );
+                }
                 showResult('This device has already been used for this session. Attempt flagged.', 'error', method);
             } else {
+                // Show failure animation for other errors
+                if (typeof attendanceAnimation !== 'undefined') {
+                    attendanceAnimation.showFailure(
+                        'Attendance Failed',
+                        'An error occurred. The session may be inactive or your roll number is invalid for this class.'
+                    );
+                }
                 showResult('An error occurred. The session may be inactive or your roll number is invalid for this class.', 'error', method);
             }
         } else {
+            // Show success animation for successful attendance
+            if (typeof attendanceAnimation !== 'undefined') {
+                attendanceAnimation.showSuccess(
+                    `Success, Roll No: ${loggedInRollNo}!`,
+                    'You are marked present.'
+                );
+            }
             showResult(`Success, Roll No: ${loggedInRollNo}! You are marked present.`, 'success', method);
         }
     }

@@ -1,0 +1,354 @@
+/* Attendance Processing Animation Styles */
+/* This file contains animation styles that can be safely included */
+
+/* Animation Container */
+.attendance-animation-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    backdrop-filter: blur(5px);
+}
+
+.attendance-animation-container.show {
+    display: flex;
+}
+
+.attendance-animation-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Processing Animation */
+.attendance-processing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.attendance-spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--primary-color, #007bff);
+    border-radius: 50%;
+    animation: attendanceSpin 1s linear infinite;
+}
+
+@keyframes attendanceSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.attendance-progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #f0f0f0;
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+.attendance-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color, #007bff), #21CBF3);
+    border-radius: 3px;
+    animation: attendanceProgressFill 2s ease-in-out;
+}
+
+@keyframes attendanceProgressFill {
+    0% { width: 0%; }
+    100% { width: 100%; }
+}
+
+.attendance-processing-text {
+    font-size: 1.2rem;
+    color: #666;
+    animation: attendancePulse 1.5s ease-in-out infinite;
+    margin: 0;
+}
+
+@keyframes attendancePulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
+
+/* Result Animation */
+.attendance-result {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.attendance-result.show {
+    display: flex;
+}
+
+.attendance-result-icon {
+    font-size: 4rem;
+    animation: attendanceBounceIn 0.6s ease-out;
+}
+
+.attendance-success-icon {
+    color: var(--success-color, #28a745);
+}
+
+.attendance-failure-icon {
+    color: var(--danger-color, #dc3545);
+}
+
+@keyframes attendanceBounceIn {
+    0% {
+        transform: scale(0.3);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.9);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.attendance-result-text {
+    font-size: 1.5rem;
+    font-weight: 600;
+    animation: attendanceSlideUp 0.5s ease-out 0.2s both;
+    margin: 0;
+}
+
+.attendance-success-text {
+    color: var(--success-color, #28a745);
+}
+
+.attendance-failure-text {
+    color: var(--danger-color, #dc3545);
+}
+
+@keyframes attendanceSlideUp {
+    0% {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.attendance-result-details {
+    font-size: 1rem;
+    color: #666;
+    animation: attendanceSlideUp 0.5s ease-out 0.4s both;
+    margin: 0;
+}
+
+.attendance-info-panel {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    border-left: 4px solid var(--primary-color, #007bff);
+    animation: attendanceSlideUp 0.5s ease-out 0.6s both;
+}
+
+.attendance-info-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+    font-size: 0.95rem;
+}
+
+.attendance-info-label {
+    font-weight: 600;
+    color: #555;
+}
+
+.attendance-info-value {
+    color: #333;
+}
+
+/* Close Button */
+.attendance-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(0, 0, 0, 0.1);
+    border: none;
+    font-size: 1.2rem;
+    color: #666;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.attendance-close-btn:hover {
+    background: rgba(0, 0, 0, 0.2);
+    color: #333;
+    transform: scale(1.1);
+}
+
+/* Manual Close Button for Results */
+.attendance-manual-close {
+    background: var(--primary-color, #007bff);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+}
+
+.attendance-manual-close:hover {
+    background: var(--primary-hover, #0069d9);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+}
+
+.attendance-manual-close:active {
+    transform: translateY(0);
+}
+
+/* Auto-close indicator */
+.attendance-auto-close {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    font-size: 0.8rem;
+    color: #999;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 5px 10px;
+    border-radius: 15px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .attendance-animation-container {
+        padding: 10px;
+    }
+    
+    .attendance-animation-card {
+        padding: 30px 20px;
+        margin: 10px;
+        max-width: calc(100vw - 20px);
+        width: calc(100vw - 20px);
+    }
+    
+    .attendance-result-icon {
+        font-size: 3.5rem;
+    }
+    
+    .attendance-result-text {
+        font-size: 1.3rem;
+    }
+    
+    .attendance-info-panel {
+        padding: 15px;
+    }
+    
+    .attendance-close-btn {
+        top: 10px;
+        right: 10px;
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+    }
+    
+    .attendance-manual-close {
+        width: 100%;
+        padding: 14px 24px;
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .attendance-animation-card {
+        padding: 25px 15px;
+        margin: 5px;
+        max-width: calc(100vw - 10px);
+        width: calc(100vw - 10px);
+    }
+    
+    .attendance-result-icon {
+        font-size: 3rem;
+    }
+    
+    .attendance-result-text {
+        font-size: 1.2rem;
+    }
+    
+    .attendance-info-panel {
+        padding: 12px;
+    }
+    
+    .attendance-info-row {
+        font-size: 0.9rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+    }
+    
+    .attendance-info-label {
+        font-size: 0.8rem;
+        color: #777;
+    }
+    
+    .attendance-info-value {
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+}
+
+/* Animation States */
+.attendance-animation-container.processing .attendance-processing {
+    display: flex;
+}
+
+.attendance-animation-container.processing .attendance-result {
+    display: none;
+}
+
+.attendance-animation-container.success .attendance-processing {
+    display: none;
+}
+
+.attendance-animation-container.success .attendance-result {
+    display: flex;
+}
+
+.attendance-animation-container.failure .attendance-processing {
+    display: none;
+}
+
+.attendance-animation-container.failure .attendance-result {
+    display: flex;
+}
