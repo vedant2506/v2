@@ -1,13 +1,29 @@
 // js/session.js
+(async () => {
+    const db = await window.dbReady; // Wait for config.js to finish
 
-document.addEventListener('DOMContentLoaded', () => {
+    console.log("Dashboard ready. Supabase client:", db);
+
+    // Example: Fetch data
+    const { data, error } = await db.from('sessions').select('*');
+    console.log(data, error);
+
+    if (db) {
+        loadSession(db);
+    }
+
+})();
+
+function loadSession(db) {
+
+
     const sessionDetails = JSON.parse(sessionStorage.getItem('activeSession'));
     if (!sessionDetails || !sessionDetails.sessionId) {
         alert('No active session found. Redirecting to dashboard.');
         window.location.href = 'dashboard.html';
         return;
     }
-    
+
     const CODE_REFRESH_INTERVAL = parseInt(sessionDetails.qrSpeed) || 15;
     let countdown = CODE_REFRESH_INTERVAL;
     let timerInterval, qrCodeInstance = null, realtimeChannel = null;
@@ -19,12 +35,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const endSessionBtn = document.getElementById('end-session-btn');
     const presentCountEl = document.getElementById('present-count');
     const livePresentListEl = document.getElementById('live-present-list');
-    
+
     fetchSessionDetails();
     generateAndDisplayCodes();
     startTimer();
     listenForAttendance();
-    
+
     endSessionBtn.addEventListener('click', () => {
         if (confirm('Are you sure you want to end this session?')) {
             sessionStorage.removeItem('activeSession');
@@ -47,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function generateAndDisplayCodes() {
         const timestamp = Date.now();
         const manualCode = timestamp.toString().slice(-6);
-        
+
         // Update the manual code in the database
         const { error } = await db.from('sessions').update({ current_manual_code: manualCode }).eq('id', sessionDetails.sessionId);
         if (error) {
@@ -55,14 +71,14 @@ document.addEventListener('DOMContentLoaded', () => {
             manualCodeEl.textContent = "ERROR";
             return;
         }
-        
+
         manualCodeEl.textContent = manualCode;
-        
+
         // --- THIS IS THE FINAL, CORRECTED LINE ---
         // The QR code data MUST only contain these two values.
         const qrData = `${sessionDetails.sessionId}|${timestamp}`;
-        
-        qrcodeEl.innerHTML = ''; 
+
+        qrcodeEl.innerHTML = '';
         qrCodeInstance = new QRCode(qrcodeEl, {
             text: qrData,
             width: 256,
@@ -83,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 1000);
     }
-    
+
     async function listenForAttendance() {
         const { data: initialData, error } = await db.from('attendance_records').select('roll_no').eq('session_id', sessionDetails.sessionId).order('marked_at');
         if (error) { console.error("Error fetching initial attendance:", error); return; }
@@ -109,4 +125,4 @@ document.addEventListener('DOMContentLoaded', () => {
         livePresentListEl.prepend(li);
         presentCountEl.textContent = parseInt(presentCountEl.textContent) + 1;
     }
-});
+}

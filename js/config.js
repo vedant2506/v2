@@ -1,13 +1,20 @@
-// js/config.js
+var db = null;
 
-// PASTE YOUR SUPABASE URL AND ANON KEY HERE
-const SUPABASE_URL = 'https://hrshatipygqtlqtjkozm.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhyc2hhdGlweWdxdGxxdGprb3ptIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk2Njc5MDIsImV4cCI6MjA3NTI0MzkwMn0.KKzsKiBOO9AlQqX-ickVMBA9qXexF-cgiVeMVFcF26M';
+window.dbReady = (async () => {
+    const { key } = await fetch("http://localhost:3000/key", {
+        headers: { "origin": window.location.origin }
+    }).then(res => res.json());
 
+    const { url } = await fetch("http://localhost:3000/url", {
+        headers: { "origin": window.location.origin }
+    }).then(res => res.json());
 
-// Initialize the Supabase client
-const { createClient } = supabase;
-const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const { createClient } = supabase;
+    db = createClient(url, key);
+
+    console.log("✅ Supabase initialized");
+    return db; // Return db when ready
+})();
 
 
 

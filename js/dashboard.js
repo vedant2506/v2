@@ -1,6 +1,21 @@
 // js/dashboard.js
+(async () => {
+    const db = await window.dbReady; // Wait for config.js to finish
 
-document.addEventListener('DOMContentLoaded', () => {
+    console.log("Dashboard ready. Supabase client:", db);
+
+    // Example: Fetch data
+    const { data, error } = await db.from('sessions').select('*');
+    console.log(data, error);
+
+    if (db) {
+        loadDashboard(db);
+    }
+
+})();
+
+function loadDashboard(db) {
+
     // --- GLOBAL STATE ---
     const faculty = JSON.parse(sessionStorage.getItem('loggedInFaculty'));
     let currentClasses = [];
@@ -192,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function startSession() {
         const confirmStartSessionBtn = document.getElementById('confirm-start-session-btn'), classId = parseInt(confirmStartSessionBtn.dataset.classId);
-        const newSession = { class_id: classId, start_time: document.getElementById('modal-start-time').value, end_time: document.getElementById('modal-end-time').value, status: 'Active', qrSpeed: document.getElementById('modal-qr-speed').value  };
+        const newSession = { class_id: classId, start_time: document.getElementById('modal-start-time').value, end_time: document.getElementById('modal-end-time').value, status: 'Active', qrSpeed: document.getElementById('modal-qr-speed').value };
         confirmStartSessionBtn.disabled = true; confirmStartSessionBtn.textContent = 'Starting...';
         const { data, error } = await db.from('sessions').insert(newSession).select().single();
         if (error) { console.error('Error starting session:', error); alert('Could not start session.'); confirmStartSessionBtn.disabled = false; confirmStartSessionBtn.textContent = 'Confirm & Begin Session'; }
@@ -330,4 +345,6 @@ document.addEventListener('DOMContentLoaded', () => {
             handleViewHistoryClick(event);
         }
     }
-});
+
+}
+

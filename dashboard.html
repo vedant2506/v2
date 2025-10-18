@@ -1,26 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#007bff"/>
+    <meta name="theme-color" content="#007bff" />
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
     <title>Teacher Dashboard</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
     <div class="container">
         <div class="dashboard-header">
             <h2 id="welcome-message">Welcome, Teacher!</h2>
             <!-- Desktop-only Actions -->
             <div class="primary-actions desktop-only">
-                <button id="show-create-class-form-btn" title="Create New Class"><i class="fas fa-plus"></i> Create Class</button>
-                <button id="show-mark-off-form-btn" title="Mark Class as Off" class="secondary"><i class="fas fa-calendar-check"></i> Mark Off</button>
+                <button id="show-create-class-form-btn" title="Create New Class"><i class="fas fa-plus"></i> Create
+                    Class</button>
+                <button id="show-mark-off-form-btn" title="Mark Class as Off" class="secondary"><i
+                        class="fas fa-calendar-check"></i> Mark Off</button>
             </div>
             <button id="logout-btn" class="logout" title="Logout"><i class="fas fa-right-from-bracket"></i></button>
         </div>
-        
+
         <div id="create-class-form-container" class="form-container" style="display: none;">
             <h4>New Class Details</h4>
             <input type="text" id="subject-name" placeholder="Subject Name">
@@ -106,16 +110,22 @@
         <div class="modal-content wide">
             <h3 id="history-class-title"></h3>
             <div class="history-filters">
-                <div class="filter-group"><label for="start-date-filter">From</label><input type="date" id="start-date-filter"></div>
-                <div class="filter-group"><label for="end-date-filter">To</label><input type="date" id="end-date-filter"></div>
-                <div class="filter-group"><label for="entries-per-page">Show</label><select id="entries-per-page"><option value="5">5</option><option value="10" selected>10</option><option value="25">25</option></select></div>
+                <div class="filter-group"><label for="start-date-filter">From</label><input type="date"
+                        id="start-date-filter"></div>
+                <div class="filter-group"><label for="end-date-filter">To</label><input type="date"
+                        id="end-date-filter"></div>
+                <div class="filter-group"><label for="entries-per-page">Show</label><select id="entries-per-page">
+                        <option value="5">5</option>
+                        <option value="10" selected>10</option>
+                        <option value="25">25</option>
+                    </select></div>
             </div>
             <div id="history-content"></div>
             <div id="history-pagination"></div>
             <button id="close-history-modal-btn" class="back-btn" style="margin-top: 1rem;">Close</button>
         </div>
     </div>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/config.js"></script>
     <script src="js/auth.js"></script>
@@ -126,4 +136,5 @@
         if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js'); }); }
     </script>
 </body>
+
 </html>

@@ -1,6 +1,19 @@
 // js/student.js
+(async () => {
+    const db = await window.dbReady; // Wait for config.js to finish
 
-document.addEventListener('DOMContentLoaded', () => {
+    console.log("Dashboard ready. Supabase client:", db);
+
+    // Example: Fetch data
+    const { data, error } = await db.from('sessions').select('*');
+    console.log(data, error);
+
+    if (db) {
+        loadStudent(db);
+    }
+
+})();
+function loadStudent(db) {
 
     // --- UTILITY: Generate a simple device fingerprint ---
     function getDeviceFingerprint() {
@@ -181,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         const codeAgeMs = Date.now() - parseInt(timestamp);
-        
+
         const qrSpeed = activeSessions.find(s => s.id.toString() === sessionId)?.qrSpeed || 15;
         console.log(codeAgeMs + " qr speed " + qrSpeed * 1000);
         if (codeAgeMs > qrSpeed * 1000) {
@@ -203,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof attendanceAnimation !== 'undefined') {
             attendanceAnimation.showProcessing('Marking attendance...');
         }
-        
+
         const { error: insertError } = await db.from('attendance_records').insert({
             session_id: sessionId,
             roll_no: parseInt(loggedInRollNo),
@@ -264,4 +277,6 @@ document.addEventListener('DOMContentLoaded', () => {
         resultEl.textContent = message;
         resultEl.className = type === 'success' ? 'result-success' : 'result-error';
     }
-});
+
+
+}

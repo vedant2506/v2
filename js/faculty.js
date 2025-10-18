@@ -35,7 +35,7 @@ async function handleLogin() {
         // Redirect to the dashboard
         window.location.href = 'dashboard.html';
     }
-    
+
     loginBtn.disabled = false;
     loginBtn.textContent = 'Log In';
 }
