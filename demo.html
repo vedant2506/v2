@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Demo - Notification Sound</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .demo-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .demo-title {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        .demo-subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .demo-button {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px;
+        }
+
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        .demo-button:active {
+            transform: translateY(0);
+        }
+
+        .demo-button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .status-message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .demo-info {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .demo-info h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .demo-info p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .demo-info ul {
+            color: #666;
+            margin-left: 20px;
+            line-height: 1.6;
+        }
+
+        .demo-info li {
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 600px) {
+            .demo-container {
+                padding: 30px 20px;
+            }
+            
+            .demo-title {
+                font-size: 1.8rem;
+            }
+            
+            .demo-button {
+                padding: 12px 25px;
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1 class="demo-title">
+            <i class="fas fa-bell"></i>
+            Attendance Demo
+        </h1>
+        <p class="demo-subtitle">Click the button to simulate marking attendance with notification sound</p>
+        
+        <button id="markAttendanceBtn" class="demo-button">
+            <i class="fas fa-check-circle"></i>
+            Mark Attendance
+        </button>
+        
+        <button id="testSoundBtn" class="demo-button" style="background: linear-gradient(45deg, #007bff, #0056b3);">
+            <i class="fas fa-volume-up"></i>
+            Test Sound
+        </button>
+        
+        <div id="statusMessage" class="status-message"></div>
+        
+        <div class="demo-info">
+            <h3><i class="fas fa-info-circle"></i> Demo Information</h3>
+            <p>This demo demonstrates the notification sound functionality for attendance marking:</p>
+            <ul>
+                <li><strong>Mark Attendance:</strong> Simulates the attendance marking process with sound</li>
+                <li><strong>Test Sound:</strong> Plays the notification sound directly</li>
+                <li>The sound will play when attendance is marked successfully</li>
+                <li>Works on both desktop and mobile devices</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+    class AttendanceDemo {
+    constructor() {
+        this.audioContext = null;
+        this.isProcessing = false;
+        
+        // ⭐ NEW: Define the path to your MP3 notification file ⭐
+        this.notificationSoundSrc = 'notification.mp3'; 
+        // IMPORTANT: Replace 'path/to/your/notification.mp3' with the actual path to your file.
+        
+        // Base64 encoded WAV for a simple, universal beep sound (Fallback)
+        this.beepBase64 = 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBjuBzvLZiTYIG2m98OScUREOUarm7L1mHwY7h9D1unEiBS13yO/eizEIHWq+8+OWT';
+        
+        this.init();
+    }
+
+    init() {
+        // We still initialize AudioContext in case you want to switch back to synthesis later, 
+        // but it's not strictly necessary for playing a simple MP3 via new Audio().
+        this.initAudioContext();
+        
+        // Bind event listeners
+        document.getElementById('markAttendanceBtn').addEventListener('click', () => this.markAttendance());
+        document.getElementById('testSoundBtn').addEventListener('click', () => this.playNotificationSound());
+    }
+
+    initAudioContext() {
+        try {
+            // Context is not used for the MP3 but kept for completeness
+            this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        } catch (error) {
+            console.warn('Audio context not supported:', error);
+        }
+    }
+
+    async markAttendance() {
+        if (this.isProcessing) return;
+        
+        this.isProcessing = true;
+        const button = document.getElementById('markAttendanceBtn');
+        const statusMessage = document.getElementById('statusMessage');
+        
+        button.disabled = true;
+        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+        statusMessage.style.display = 'none';
+        
+        try {
+            await this.delay(1500);
+            
+            const isSuccess = Math.random() > 0.1;
+            
+            if (isSuccess) {
+                statusMessage.className = 'status-message status-success';
+                statusMessage.innerHTML = '<i class="fas fa-check-circle"></i> Attendance marked successfully! (Sound from MP3)';
+                statusMessage.style.display = 'block';
+                
+                // ⭐ Play the MP3 notification sound ⭐
+                this.playNotificationSound();
+                
+                setTimeout(() => {
+                    button.innerHTML = '<i class="fas fa-check-circle"></i> Mark Attendance';
+                    button.disabled = false;
+                }, 2000);
+                
+            } else {
+                statusMessage.className = 'status-message status-error';
+                statusMessage.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Failed to mark attendance. Please try again.';
+                statusMessage.style.display = 'block';
+                
+                // Use a different fallback sound for error if desired, 
+                // but for this example, we'll stick to the default fallback.
+                this.playFallbackNotification(); 
+
+                button.innerHTML = '<i class="fas fa-check-circle"></i> Mark Attendance';
+                button.disabled = false;
+            }
+            
+        } catch (error) {
+            console.error('Error marking attendance:', error);
+            statusMessage.className = 'status-message status-error';
+            statusMessage.innerHTML = '<i class="fas fa-exclamation-triangle"></i> An error occurred. Please try again.';
+            statusMessage.style.display = 'block';
+            
+            this.playFallbackNotification();
+
+            button.innerHTML = '<i class="fas fa-check-circle"></i> Mark Attendance';
+            button.disabled = false;
+        }
+        
+        this.isProcessing = false;
+    }
+
+    // ⭐ MAIN CHANGE: Uses HTML5 Audio to play MP3 file. ⭐
+    playNotificationSound() {
+        try {
+            const audio = new Audio(this.notificationSoundSrc);
+            
+            // Play the audio and catch any immediate promise rejections
+            audio.play().catch(e => {
+                console.warn('MP3 playback failed. Falling back to beep.', e);
+                // If the MP3 fails to load or play (e.g., due to CORS or file path error), use the internal fallback
+                this.playFallbackNotification();
+            });
+
+        } catch (error) {
+            // Catch synchronous errors (e.g., if new Audio() itself fails)
+            console.error('Error initiating HTML5 Audio. Falling back.', error);
+            this.playFallbackNotification();
+        }
+    }
+
+    // This remains the robust, internal Base64 fallback.
+    playFallbackNotification() {
+        try {
+            const audio = new Audio();
+            audio.src = this.beepBase64; 
+            audio.play().catch(e => {
+                console.warn('Final fallback (Base64 beep) failed:', e);
+            });
+        } catch (e) {
+            console.warn('No audio support available:', e);
+        }
+    }
+
+    delay(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+}
+
+// Initialize demo when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    new AttendanceDemo();
+});
+    </script>
+</body>
+</html>

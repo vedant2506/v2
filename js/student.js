@@ -237,6 +237,8 @@ function loadStudent(db) {
                         'This device has already been used for this session. Attempt flagged.'
                     );
                 }
+                const audio = new Audio('../error.mp3'); // replace with your audio file path
+                audio.play();
                 showResult('This device has already been used for this session. Attempt flagged.', 'error', method);
             } else {
                 // Show failure animation for other errors
@@ -246,6 +248,8 @@ function loadStudent(db) {
                         'An error occurred. The session may be inactive or your roll number is invalid for this class.'
                     );
                 }
+                const audio = new Audio('../error.mp3'); // replace with your audio file path
+                audio.play();
                 showResult('An error occurred. The session may be inactive or your roll number is invalid for this class.', 'error', method);
             }
         } else {
@@ -256,6 +260,8 @@ function loadStudent(db) {
                     'You are marked present.'
                 );
             }
+            const audio = new Audio('../notification.mp3'); // replace with your audio file path
+            audio.play();
             showResult(`Success, Roll No: ${loggedInRollNo}! You are marked present.`, 'success', method);
         }
     }
